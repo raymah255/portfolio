@@ -1,0 +1,607 @@
+{% extends "base.html" %} {% load static %} {% block content %}
+<main class="main">
+    <section class="home section" id="home">
+        <div class="home__container container grid">
+            <div class="home__content grid">
+                <div class="home__social">
+                    <a href="#" target="__blank" class="home__social-icon">
+                        <i class="fa fa-linkedin"></i>
+                    </a>
+
+                    <a href="#" target="__blank" class="home__social-icon">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+
+                    <a href="#" target="__blank" class="home__social-icon">
+                        <i class="fa fa-instagram"></i>
+                    </a>
+                </div>
+
+                <div class="home__img">
+                    <svg class="home__blob" viewBox="-12 5 150 150" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <clipPath id="user-space" clipPathUnits="userSpaceOnUse">
+                                <path fill="#FF0066"
+                                    d="M49.5,-65.4C58.2,-51.8,55.1,-30.5,54.2,-12.9C53.4,4.7,54.7,18.5,49.1,28.6C43.6,38.6,31.1,44.8,17.6,50.9C4.1,57,-10.5,62.8,-22.5,59.5C-34.5,56.1,-44.1,43.5,-53.7,29.7C-63.3,15.8,-73,0.6,-73.4,-15.7C-73.8,-32,-65,-49.4,-51.2,-62.2C-37.4,-75,-18.7,-83.1,0.9,-84.1C20.4,-85.2,40.9,-79.1,49.5,-65.4Z"
+                                    transform="translate(80 90)" </clipPath>
+                        </defs>
+
+                        <image class="home__blob-img" width="100%" height="100%" preserveAspectRatio="xMinYMin slice"
+                            xlink:href="{% static 'images/profile.jpg' %}" clip-path="url(#user-space)" />
+                    </svg>
+                </div>
+
+                <div class="home__data">
+                    <h1 class="home__title">Hi I'am Abel</h1>
+                    <h3 class="home__subtitle">Front End and Back End developer</h3>
+                    <p class="home__description">
+                        Hign level of experience in web design and knowledge of producing
+                        quality work.
+                    </p>
+                    <a href="#contact" class="button button--flex">
+                        Contact Me<i class="fa fa-paper-plane-o button__icon"></i>
+                    </a>
+                </div>
+            </div>
+
+            <div class="home__scroll">
+                <a href="#about" class="home__scroll-button button--flex">
+                    <!-- <i class="fa fa-arrows-v home__scroll-mouse"></i> -->
+                    <span class="home__scroll-name">Scroll down</span>
+                    <i class="fa fa-arrow-down home__scroll-arrow"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <section class="about section" id="about">
+        <h2 class="section__title">About Me</h2>
+        <span class="section__subtitle">My introduction</span>
+
+        <div class="about__container container grid">
+            <img src="{% static 'images/profile.jpg' %}" alt="" class="about__img" />
+
+            <div class="about__data">
+                <p class="about__description">
+                    Web developer, with extensive knowledge and experience, working in
+                    technologies.
+                </p>
+
+                <div class="about__info">
+                    <div>
+                        <span class="about__info-title">08+</span>
+                        <span class="about__info-name">Years <br />
+                            experience</span>
+                    </div>
+
+                    <div>
+                        <span class="about__info-title">20+</span>
+                        <span class="about__info-name">Competed <br />
+                            project</span>
+                    </div>
+
+                    <div>
+                        <span class="about__info-title">05+</span>
+                        <span class="about__info-name">Self <br />
+                            Employment</span>
+                    </div>
+                </div>
+
+                <div class="about__buttons">
+                    <a download="" href="{% static 'images/1.jpg' %}" class="button button--flex">
+                        Download Cv <i class="fa fa-download button__icon"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="skills section" id="skills">
+        <h2 class="section__title">Skills</h2>
+        <span class="section__subtitle">My technical level</span>
+
+        <div class="skills__container container grid">
+            <!-- SKILLS 1 -->
+            <div>
+                <div class="skills__content skills__close">
+                    <div class="skills__header">
+                        <i class="fa fa-code skills__icon" aria-hidden="true"></i>
+
+                        <div>
+                            <h1 class="skills__titles">Frontend Development</h1>
+                            <span class="skills__subtitle">More than 4 years</span>
+                        </div>
+
+                        <i class="fa fa-angle-down skills__arrow" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="skills__list grid">
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">HTML</h3>
+                                <span class="skills__number">90%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__html"></span>
+                            </div>
+                        </div>
+
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">CSS</h3>
+                                <span class="skills__number">85%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__css"></span>
+                            </div>
+                        </div>
+
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">REACT</h3>
+                                <span class="skills__number">80%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__react"></span>
+                            </div>
+                        </div>
+
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">JAVASCRIPT</h3>
+                                <span class="skills__number">70%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__javascript"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKILLS 2 -->
+            <div>
+                <div class="skills__content skills__close">
+                    <div class="skills__header">
+                        <i class="fa fa-server skills__icon" aria-hidden="true"></i>
+
+                        <div>
+                            <h1 class="skills__titles">Backend Development</h1>
+                            <span class="skills__subtitle">More than 1 years</span>
+                        </div>
+
+                        <i class="fa fa-angle-down skills__arrow" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="skills__list grid">
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">PHP</h3>
+                                <span class="skills__number">70%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__php"></span>
+                            </div>
+                        </div>
+
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">PYTHON</h3>
+                                <span class="skills__number">90%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__python"></span>
+                            </div>
+                        </div>
+
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">JAVA</h3>
+                                <span class="skills__number">50%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__java"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SKILLS 3 -->
+            <div>
+                <div class="skills__content skills__close">
+                    <div class="skills__header">
+                        <i class="fa fa-laptop skills__icon" aria-hidden="true"></i>
+
+                        <div>
+                            <h1 class="skills__titles">Designer</h1>
+                            <span class="skills__subtitle">More than 2 years</span>
+                        </div>
+
+                        <i class="fa fa-angle-down skills__arrow" aria-hidden="true"></i>
+                    </div>
+
+                    <div class="skills__list grid">
+                        <div class="skills__data">
+                            <div class="skills__titles">
+                                <h3 class="skills__name">Phptoshop</h3>
+                                <span class="skills__number">60%</span>
+                            </div>
+                            <div class="skills__bar">
+                                <span class="skills__percentage skills__photoshop"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="qualification section">
+        <h2 class="section__title">Qualification</h2>
+        <span class="section__subtitle">My Personal Journey</span>
+
+        <div class="qualification__container container">
+            <div class="qualification__tabs">
+                <div class="qualification__button button--flex qualification__active" data-target="#education">
+                    <i class="fa fa-graduation-cap qualification__icon" aria-hidden="true"></i>
+                    Education
+                </div>
+
+                <div class="qualification__button button--flex" data-target="#work">
+                    <i class="fa fa-briefcase qualification__icon" aria-hidden="true"></i>
+                    Work
+                </div>
+            </div>
+
+            <div class="qualification__sections">
+                <div class="qualification__content qualification__active" data-content id="education">
+                    <div class="qualification__data">
+                        <div>
+                            <h3 class="qualification__title">Education in Math</h3>
+                            <span class="qualification__subtitle">Teofilo Kisanji University</span>
+                            <div class="qualification__calender">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                2012 - 2015
+                            </div>
+                        </div>
+
+                        <div>
+                            <span class="qualification__rounder"></span>
+                            <span class="qulification__line"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="qualification__content" data-content id="work">
+                    <div class="qualification__data">
+                        <div></div>
+
+                        <div>
+                            <span class="qualification__rounder"></span>
+                            <span class="qulification__line"></span>
+                        </div>
+
+                        <div>
+                            <h3 class="qualification__title">Mathematics Teacher</h3>
+                            <span class="qualification__subtitle">Mwanakianga Secondary School</span>
+                            <div class="qualification__calender">
+                                <i class="fa fa-calendar" aria-hidden="true"></i>
+                                since 2017 up to now
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="services section" id="services">
+        <h2 class="section__title">Services</h2>
+        <span class="section__subtitle">What i offer</span>
+
+        <div class="services__container container grid">
+            <div class="services__content">
+                <div>
+                    <i class="fa fa-th-large services__icon" aria-hidden="true"></i>
+                    <h3 class="services__title">
+                        Ui/Ux <br />
+                        Designer
+                    </h3>
+                </div>
+
+                <span class="button button--flex button-small button--link services__button">
+                    View More
+                    <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                </span>
+
+                <div class="services__modal">
+                    <div class="services__modal-content">
+                        <h4 class="services__modal-title">
+                            Ui/Ux <br />
+                            Designer
+                        </h4>
+                        <i class="fa fa-times services__modal-close" aria-hidden="true"></i>
+
+                        <ul class="services__modal-services grid">
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop web page</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the destop application</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="services__content">
+                <div>
+                    <i class="fa fa-code services__icon" aria-hidden="true"></i>
+                    <h3 class="services__title">
+                        Frontend <br />
+                        Developer
+                    </h3>
+                </div>
+
+                <span class="button button--flex button-small button--link services__button">
+                    View More
+                    <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                </span>
+
+                <div class="services__modal">
+                    <div class="services__modal-content">
+                        <h4 class="services__modal-title">
+                            Frontend<br />
+                            Developer
+                        </h4>
+                        <i class="fa fa-times services__modal-close" aria-hidden="true"></i>
+
+                        <ul class="services__modal-services grid">
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop web page</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the destop application</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="services__content">
+                <div>
+                    <i class="fa fa-laptop services__icon" aria-hidden="true"></i>
+                    <h3 class="services__title">
+                        Ui/Ux <br />
+                        Designer
+                    </h3>
+                </div>
+
+                <span class="button button--flex button-small button--link services__button">
+                    View More
+                    <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                </span>
+
+                <div class="services__modal">
+                    <div class="services__modal-content">
+                        <h4 class="services__modal-title">
+                            Ui/Ux <br />
+                            Designer
+                        </h4>
+                        <i class="fa fa-times services__modal-close" aria-hidden="true"></i>
+
+                        <ul class="services__modal-services grid">
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop web page</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the destop application</p>
+                            </li>
+                            <li class="services__modal-service">
+                                <i class="fa fa-check-circle-o services__modal-icon" aria-hidden="true"></i>
+                                <p>I develop the user interface</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio section portifolio" id="portifolio">
+        <h2 class="section__title">Portfolio</h2>
+        <span class="section__subtitle">Most Recent Work</span>
+
+        <div class="portfolio__container container swiper-container swiper">
+            <div class="swiper-wrapper">
+                <div class="portfolio__content grid swiper-slide">
+                    <img src="{% static 'images/profile.jpg' %}" alt="port" class="portfolio__img" />
+                    <div class="portfolio__data">
+                        <h3 class="portfolio__title">Morden Website</h3>
+                        <p class="portfolio__description">
+                            Responsive Website, with UI components and animated interactions.
+                        </p>
+                        <a href="#" class="button button--flex button--small portfolio__button">
+                            Demo
+                            <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="portfolio__content grid swiper-slide">
+                    <img src="{% static 'images/possibility.png' %}" alt="port" class="portfolio__img" />
+                    <div class="portfolio__data">
+                        <h3 class="portfolio__title">Morden Website</h3>
+                        <p class="portfolio__description">
+                            Responsive Website, with UI components and animated interactions.
+                        </p>
+                        <a href="#" class="button button--flex button--small portfolio__button">
+                            Demo
+                            <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="portfolio__content grid swiper-slide">
+                    <img src="{% static 'images/ai.png' %}" alt="port" class="portfolio__img" />
+                    <div class="portfolio__data">
+                        <h3 class="portfolio__title">Morden Website</h3>
+                        <p class="portfolio__description">
+                            Responsive Website, with UI components and animated interactions.
+                        </p>
+                        <a href="#" class="button button--flex button--small portfolio__button">
+                            Demo
+                            <i class="fa fa-arrow-right button__icon" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="swiper-button-next">
+                <i class="fa fa-angle-right swiper-portfolio-icon"></i>
+            </div>
+
+            <div class="swiper-button-prev">
+                <i class="fa fa-angle-left swiper-portfolio-icon"></i>
+            </div>
+
+            <div class="swiper-pagination"></div>
+        </div>
+    </section>
+
+    <section class="project section">
+        <div class="project__bg">
+            <div class="project__container container grid">
+                <div class="project__data">
+                    <h2 class="project__title">You have new project</h2>
+                    <p class="project__description">Contact me now</p>
+                    <a href="#contact" class="button button--flex button--white">
+                        Contact me
+                        <i class="fa fa-paper-plane-o project__icon button__icon" aria-hidden="true"></i>
+                    </a>
+                </div>
+
+                <img src="{% static 'images/profile.jpg' %}" alt="proj" class="project__img" />
+            </div>
+        </div>
+    </section>
+
+    <section class="blog section" id="blog">
+        <h2 class="section__title">Blog</h2>
+        <span class="section__subtitle">The latest Post</span>
+
+        <div class="services__container container card-grid">
+            {% for post in posts %}
+            <!-- <div class="services__content">
+                heyas
+            </div> -->
+            
+            <div class="card card-shadow">
+                <div class="card-header card-image">
+                    <img src="{{post.image.url}}" alt="" srcset="">
+                    <p style="padding: 1rem; font-weight: bold;">{{post.title}}</p>
+                </div>
+                <div class="card-body">{{post.content|truncatechars:200|safe}}</div>
+                <div class="card-footer">
+                    <button class="btn"><a href="/blog/{{post.slug}}" style="text-decoration: none; color: white;">read more ....</a> </button>
+                    <button class="btn btn-outline">Contact Seller</button>
+                </div>
+               
+            </div>
+            {% endfor %}
+        </div>
+
+    </section>
+
+    <section class="contact__section" id="contact">
+        <h2 class="section__title">Contact Me</h2>
+        <span class="section__subtitle">Get in touch</span>
+        <div class="contact__container container grid">
+            <div>
+                <div class="contact__information">
+                    <i class="fa fa-phone contact__icon"></i>
+                    <div>
+                        <h3 class="contact__title">Call Me</h3>
+                        <span class="contact__subtitle">+255 620 469 580</span>
+                    </div>
+                </div>
+
+                <div class="contact__information">
+                    <i class="fa fa-envelope contact__icon"></i>
+                    <div>
+                        <h3 class="contact__title">Email</h3>
+                        <span class="contact__subtitle">abel.steven111@gmail.com</span>
+                    </div>
+                </div>
+
+                <div class="contact__information">
+                    <i class="fa fa-map-marker contact__icon"></i>
+                    <div>
+                        <h3 class="contact__title">Location</h3>
+                        <span class="contact__subtitle">Mpwapwa Dodoma</span>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form action="" class="contact__form grid">
+                    <div class="contact__inputs grid">
+                        <div class="contact__content">
+                            <label for="" class="cantact__label">Name</label>
+                            <input type="text" class="contact__input" />
+                        </div>
+                        <div class="contact__content">
+                            <label for="" class="cantact__label">Email</label>
+                            <input type="email" class="contact__input" />
+                        </div>
+                        <div class="contact__content">
+                            <label for="" class="cantact__label">Project</label>
+                            <input type="text" class="contact__input" />
+                        </div>
+                        <div class="contact__content">
+                            <label for="" class="cantact__label">Message</label>
+                            <textarea name="" id="" cols="0" rows="7" class="contact__input"></textarea>
+                        </div>
+                        <div>
+                            <a href="#" class="button button--flex">
+                                Send Message
+                                <i class="fa fa-paper-plane-o button__icon"></i>
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="fa fa-arrow-up scrollup__icon" aria-hidden="true"></i>
+    </a>
+</main>
+{% endblock content %}

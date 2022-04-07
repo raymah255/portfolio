@@ -1,0 +1,641 @@
+{% extends 'pages/blog/base.html' %} {% load static %} {% block content %}
+{% load static %}
+<style>
+    .textarea-container {
+        position: relative;
+    }
+
+    textarea {
+        display: block;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid lightgray;
+        margin-bottom: 2px;
+    }
+
+    .button-line {
+        display: none;
+    }
+
+    .button-line-block {
+        height: 2px;
+        width: 100%;
+        border: 1px solid black;
+        position: absolute;
+        bottom: 0;
+        transform: scale(0);
+        animation: moveline 0.5s forwards;
+        display: block;
+    }
+
+    .button-replies-line {
+        display: none;
+    }
+
+    .button-replies-line-block {
+        height: 2px;
+        width: 100%;
+        border: 1px solid black;
+        position: absolute;
+        bottom: 0;
+        transform: scale(0);
+        animation: moveline 0.5s forwards;
+        display: block;
+    }
+
+    @keyframes moveline {
+        0% {
+            transform: scale(0);
+        }
+
+        100% {
+            transform: scale(1);
+        }
+    }
+
+    .post-list {
+        position: relative;
+    }
+
+    .like {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .post-list .like .fa-heart {
+        font-size: xx-large;
+        transition: 0.5s;
+        cursor: pointer;
+        color: lightgray;
+    }
+
+    .post-list .like .heart .fa:hover {
+        color: red;
+        background-clip: text;
+        background-image: linear-gradient(to right purple pink);
+    }
+
+    .post-list .like .fa-bookmark {
+        font-size: xx-large;
+        transition: 0.5s;
+        cursor: pointer;
+        color: lightgray;
+    }
+
+    .post-list .like .fa-bookmark:hover {
+        font-size: xx-large;
+        transition: 0.5s;
+        cursor: pointer;
+        color: black;
+    }
+
+    .messageContainer {
+        position: relative;
+        width: 100%;
+        word-wrap: break-word;
+        margin: 20px 0;
+        padding-left: 60px;
+    }
+
+    .profile_pic {
+        background-color: black;
+        padding: 15px 22px;
+        color: white;
+        border-radius: 50%;
+        position: absolute;
+        font-size: 1.0rem;
+        top: 0;
+        left: 0;
+    }
+
+    .profile_pic_real {
+        position: absolute;
+        font-size: 1.0rem;
+        top: 0;
+        left: 0;
+    }
+
+    .messageUser {
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    .messageText {
+        font-size: 1.0rem;
+        margin: 5px 0;
+    }
+
+    .messageIconContainer {
+        margin-top: 10px;
+    }
+
+    .messageIconContainer>* {
+        display: inline-block;
+        color: gray;
+        margin-right: 10px;
+        cursor: pointer;
+    }
+
+    .arrowReplies {
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+    .arrowReplies>* {
+        color: #4688de;
+        display: inline-block;
+    }
+
+    .arrowReplies>i {
+        margin-left: 10px;
+    }
+
+    .subMessage {
+        margin-left: 60px;
+    }
+
+    .subMessageShow {
+        margin-left: 60px;
+        display: none;
+    }
+
+    .subMessageHide {
+        margin-left: 60px;
+        display: none;
+    }
+
+    .profile_pic_rep {
+        background-color: black;
+        padding: 5px 10px;
+        color: white;
+        border-radius: 50%;
+        position: absolute;
+        font-size: 0.8rem;
+        top: 0;
+        left: 0;
+    }
+
+    .profile_pic_rep_real {
+        position: absolute;
+        font-size: 0.8rem;
+        top: 0;
+        left: 0;
+    }
+
+    .profile_post_pic {
+        background-color: black;
+        padding: 12px 16px;
+        color: white;
+        border-radius: 50%;
+    }
+
+    .profile_post_pic_real {
+        padding: 12px 16px;
+        color: white;
+        border-radius: 50%;
+    }
+
+
+    .messageUserRep {
+        margin-left: 3px;
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+
+    @media screen and (max-width: 1200px) {
+        .profile-side {
+            display: none;
+        }
+    }
+
+    .commentContainer {
+        position: relative !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    .commentProf {
+        position: absolute;
+        top: 30% !important;
+        left: 0 !important;
+        justify-self: center !important;
+    }
+</style>
+
+
+<div style="display: flex; justify-content: space-between; position:relative;" class="mt-5">
+
+    <div>
+        <div id="post-list"></div>
+        <div class="row mt-2 mx-auto" id="comment_id" style="max-width: 700px"></div>
+
+        <div class="row mt-2 mx-auto commentContainer" style="max-width: 700px">
+
+            <form id="create-comment" method="POST" class="ml-5" style="margin-left: 50px;">
+                {% csrf_token %}
+                <section class="textarea-container">
+                    
+                    <textarea type="text" rows="2" onfocus="ShowButtonBelow()" onblur="HideButtonBelow()"
+                        placeholder="Public Comment ..." name="content"></textarea>
+                    <input type="hidden" name="post" value="{{post.id}}" class="form-control mb-1" />
+                    <div class="button-line" id="button-line"></div>
+                </section>
+
+                <button class="btn btn-sm btn-primary" style="float: right">Comment</button>
+
+                <!-- <button class="btn btn-sm btn-primary mx-2" style="float: right;">
+                Comment
+            </button> -->
+            </form>
+
+
+
+            <div><a href="/profile/{{post.user.username}}"><img src="/{{post.user.profile.profile_img}}" alt=""
+                        class="commentProf"
+                        style="width: 50px; height: 50px;  border-radius: 50%; border: 1px solid red"></a> </div>
+
+        </div>
+
+        <div class="row mt-5 mx-auto mb-5" id="comment-list" style="max-width: 700px">
+           <div class="row mt-5 mx-auto mb-5" id="replies-list" style="max-width: 700px"></div> 
+        </div>
+        
+
+        <section class="arrowReplies" id="sub-message" onclick="subMessageShowDiv()">
+
+        </section>
+
+    </div>
+
+    <div id="profile-side" class="mt-5 pt-5 profile-side" style="position: fixed; left: 65%;">
+
+    </div>
+</div>
+
+
+
+<script>
+    
+    
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    const repliesView = document.getElementById("sub-message")
+    const buttomLineDiv = document.getElementById("button-line");
+    const postList = document.getElementById("post-list");
+    const commentList = document.getElementById("comment-list");
+    const repliesList = document.getElementById("replies-list");
+    const createComment = document.getElementById("create-comment");
+    const repliesComment = document.getElementById("replies");
+    const commentCount = document.getElementById("comment_id");
+    const profileSide = document.getElementById("profile-side");
+    
+    
+
+
+    function profileListDiv(profile) {
+        return `
+        <div style="display: flex; justify-content: space-between;">
+            <div style="display: flex;  align-items: center;">
+        
+               ${profile.is_profile_pic ? `<a href="/profile/{{post.user.username}}"><img src= "http://localhost:8000/${profile.image}/" alt="" style="width: 50px; height: 50px;  border-radius: 50%; border: 1px solid red"></a>` : '<img src= "static/profiles/hero.jpg" alt="" style="width: 50px; height: 50px;  border-radius: 50%;">'}
+               
+                <div>
+                    <div style="margin-left: 12px; font-weight: bold;">{{post.user.username}}</div>
+                    <div style="margin-left: 12px;"> <small>{{post.user.first_name}} {{post.user.last_name}}</small> </div>
+                </div>                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               
+            </div>
+
+            <div>
+                <a href="javascripts:void(0)" style="text-decoration: none; font-weight: bold; font-size: 20px;">
+                    <i class="fa fa-bookmark" aria-hidden="true"></i>
+                </a>
+            </div>
+
+
+        </div>
+        `
+    }
+
+
+    function loadProfile() {
+        const xhr = new XMLHttpRequest();
+        const method = "GET";
+        const url = "/api/posts/{{post.slug}}";
+        xhr.responseType = "json";
+        xhr.open(method, url);
+
+        xhr.onload = function () {
+            post_list = xhr.response;
+            let finalPost = "";
+            const currentPost = profileListDiv(post_list.user);
+            finalPost += currentPost;
+            profileSide.innerHTML = finalPost;
+
+        };
+        xhr.send();
+    }
+
+    loadProfile()
+
+    function ShowButtonBelow() {
+        buttomLineDiv.classList = "button-line-block";
+    }
+
+    function HideButtonBelow() {
+        buttomLineDiv.classList = "button-line";
+    }
+
+    createComment.addEventListener("submit", createComments);
+
+    function postListDiv(post) {
+
+        return `
+        <section class="post-list row mt-5 mx-auto" style="max-width: 700px;">
+            <div class="like">
+               
+                ${post.user.is_profile_pic ? `<a href="/profile/${post.user.username}"><img src= "http://localhost:8000/${post.user.image}/" alt="" style="width: 50px; height: 50px;  border-radius: 50%; border: 1px solid red; margin-bottom: 10px"></a>` : `<div><span class="profile_post_pic">${post.user.username[0].toUpperCase()}</span></div>`}
+                <span class="heart" style="justify-content: center; align-items: center;"> 
+                    <span style="font-size: 22px; margin-right: 10px; font-weight: bold;">${post.likes}</span> 
+                     <a href="javascript:void(0)" onclick="likeButtonDiv(${post.id})">${post.is_like ? '<i class="fa fa-heart heart-red" style="color:red; transition: 1s" id="heart"  aria-hidden="true"></i>' : '<i class="fa fa-heart"  aria-hidden="true"></i>'}</a>
+                    </span>
+            </div>
+            <div class="col-12 mb-2">
+                <div>
+                    <div class="img"><img src="http://localhost:8000/${post.image}/"  class="card-img-top" alt="..." style="border: 1px solid lightgray; width:100%; height: 400px; object-fit: cover; object-position: 20% 20%; border-radius:4px;"></div>
+                    <div class="card-body">
+                        <h5>${post.title}</h5>
+                        <p>${post.content}</p>
+                    </div>
+                </div>
+            </div>
+        </section>`;
+
+
+    }
+
+    function likeButtonDiv(postId) {
+        data = JSON.stringify({
+            id: postId
+        })
+
+        const xhr = new XMLHttpRequest()
+        const url = "/api/post/like/"
+        const method = "post"
+        const csrftoken = getCookie('csrftoken');
+        xhr.responseType = "json"
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                loadPost();
+            } else if (xhr.status === 403) {
+                window.location.href = "/accounts/login"
+            }
+
+            
+
+        }
+        xhr.onabort = function () {
+            console.log("Method")
+            console.log(xhr.response)
+        }
+        xhr.send(data)
+    }
+
+    function commentListDiv(comment) {
+
+        return `
+        <section class="messageContainer">
+            <div class="messageUser">${comment.user.username}</div>
+            ${comment.user.is_profile_pic ? `<a href="/profile/${comment.user.username}"><img src= "http://localhost:8000/${comment.user.image}/" class="profile_pic_real" alt="" style="width: 50px; height: 50px; object-fit: cover;  border-radius: 50%; border: 1px solid red; margin-bottom: 10px"></a>` : `<span class="profile_pic">${comment.user.username[0].toUpperCase()}</span>`}
+            <div class="messageText">${comment.content}</div>
+            
+            <section class="messageIconContainer">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                <div>1</div>
+                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+
+                <div style="cursor: pointer" onclick="openReplyBox(${comment.id})">REPLY</div>
+                <div style="cursor: pointer">DELETE</div>
+            </section>
+            <div class="mx-5">
+            <div id=${comment.id}></div>    
+        </div>
+        </section>
+             
+      `;
+    }
+
+    function subMessageShowDiv(comment) {
+        const i = document.getElementById(comment)
+        console.log(i)
+    }
+
+    function repliesListDiv(comment) {
+        return `
+        <section class="subMessage">
+              <section class="messageContainer">
+            <div class="messageUserRep">${comment.user.username}</div>
+            ${comment.user.is_profile_pic ? `<a href="/profile/${comment.user.username}"><img src= "http://localhost:8000/${comment.user.image}/" class="profile_pic_rep_real" alt="" style="width: 30px; height: 30px; object-fit: cover;  border-radius: 50%; border: 1px solid red; margin-bottom: 10px"></a>` : `<span class="profile_pic_rep">${comment.user.username[0].toUpperCase()}</span>`}
+            <div class="messageTextRep">${comment.content}</div>
+            
+            <section class="messageIconContainer">
+                <i class="fa fa-thumbs-up" aria-hidden="true"></i>
+                <div>1</div>
+                <i class="fa fa-thumbs-down" aria-hidden="true"></i>
+                <div style="cursor: pointer">DELETE</div>
+            </section>
+            <div class="mx-5">
+            <div id=${comment.id}></div>    
+        </div>
+
+        </section>
+        </section>
+      
+        
+            `;
+    }
+
+    function openReplyBox(id) {
+        if (document.getElementById("create-reply")) {
+            document.getElementById("create-reply").remove();
+        }
+        document.getElementById("create-reply");
+
+        let i = document.getElementById(id);
+        i.insertAdjacentHTML(
+            "beforeend",
+            `<form method="POST" id="create-reply">
+            {% csrf_token %}
+            <section class="textarea-container">
+                <textarea type="text" id="repliesArea" placeholder="Public Comment ..." name="content"  mb-1"></textarea>
+                <input type="hidden" name="post" value={{post.id}} class="form-control mb-1" />
+                <input type="hidden" name="parent" value=${id} class="form-control mb-1" />
+                <div class="button-replies-line-block" id="button-replies-line"></div>
+            </section>
+            <button class="btn btn-sm btn-primary mb-0" style="float: right;">
+                Reply
+            </button>
+
+            <button type="button" class="btn btn-sm btn-secondary mx-2" onclick="closeReplyForm()" style="float: right;">
+                Cancel
+            </button>
+        </form>`
+        );
+
+
+        const buttomRepliesDiv = document.getElementById("repliesArea");
+        const buttomRepliesLineDiv = document.getElementById("button-replies-line");
+        const createReply = document.getElementById("create-reply");
+        buttomRepliesDiv.addEventListener("focus", function () {
+            buttomRepliesLineDiv.classList = "button-replies-line-block";
+        });
+
+        buttomRepliesDiv.addEventListener("blur", function () {
+            buttomRepliesLineDiv.classList = "button-replies-line";
+        });
+        createReply.addEventListener("submit", createReplies);
+    }
+
+    function closeReplyForm() {
+        document.getElementById("create-reply").remove();
+    }
+
+    function commentCountDiv(comment) {
+        if (comment.count === 0) {
+            return `<b>Make Comment</b>`;
+        } else if (comment.count === "1") {
+            return `<b>${comment.count} Comment</b>`;
+        }
+        return `<b>${comment.count} Comments</b>`;
+    }
+
+    function loadComments() {
+        const xhr = new XMLHttpRequest();
+        const method = "GET";
+        const url = "/api/posts/{{post.slug}}";
+        xhr.responseType = "json";
+        xhr.open(method, url);
+        xhr.onload = function () {
+            post_list = xhr.response;
+            const comment_list = post_list.comments;
+            let finalComment = "";
+            for (let i = 0; i < comment_list.length; i++) {
+                const currentComment = commentListDiv(comment_list[i]);
+                finalComment += currentComment;
+
+                replies_list = comment_list[i].replies;
+                for (let i = 0; i < replies_list.length; i++) {
+                    const currentReplies = repliesListDiv(replies_list[i])
+                    finalComment += currentReplies;
+                } 
+                repliesList.innerHTML = finalComment;
+            }
+           
+            commentList.innerHTML = finalComment;
+
+
+        };
+        xhr.send();
+    }
+
+    function createComments(e) {
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        const method = "POST";
+        const url = "/api/comments/create/";
+
+        const myform = e.target;
+        const myformData = new FormData(myform);
+
+        xhr.responseType = "json";
+        xhr.open(method, url);
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                myform.reset()
+                loadPost();
+                loadComments();
+            } else if (xhr.status === 403) {
+                window.location.href = "/accounts/login"
+            }
+        };
+
+        xhr.send(myformData);
+    }
+
+    function createReplies(e) {
+        e.preventDefault();
+        const xhr = new XMLHttpRequest();
+        const method = "POST";
+        const url = "/api/comments/create/";
+
+        const myform = e.target;
+        const myformData = new FormData(myform);
+
+        xhr.responseType = "json";
+        xhr.open(method, url);
+
+        finalCommentCount = "";
+        xhr.onload = function () {
+    
+            if (xhr.status === 200) {
+                loadComments();
+                loadPost();
+            } else if (xhr.status === 403) {
+                window.location.href = "/accounts/login"
+            }
+
+
+
+            };
+
+            xhr.send(myformData);
+        }
+
+        function loadPost() {
+            const xhr = new XMLHttpRequest();
+            const method = "GET";
+            const url = "/api/posts/{{post.slug}}";
+            xhr.responseType = "json";
+            xhr.open(method, url);
+
+            xhr.onload = function () {
+                post_list = xhr.response;
+
+                let finalPost = "";
+                const currentPost = postListDiv(post_list);
+                finalPost += currentPost;
+                postList.innerHTML = finalPost;
+
+                let finalCommentCount = "";
+                const currentCommentCount = commentCountDiv(post_list);
+                finalCommentCount += currentCommentCount;
+                commentCount.innerHTML = finalCommentCount;
+            };
+            xhr.send();
+        }
+
+        loadComments();
+        loadPost();
+</script>
+{% endblock content %}

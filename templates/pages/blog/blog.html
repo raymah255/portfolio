@@ -1,0 +1,335 @@
+{% extends 'pages/blog/base.html' %}
+{% load static %}
+{% block content %}
+
+<style>
+    .button-div {
+        position: relative;
+        margin-top: 90px !important;
+    }
+
+    .hide {
+        display: none;
+    }
+
+
+
+
+    .button-add {
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    .blog-image {
+        position: relative;
+    }
+
+    .blog-image img {
+        width: 100%;
+    }
+
+    .date {
+        width: 39px;
+        height: 39px;
+        border-radius: 50%;
+        position: absolute;
+        top: 3%;
+        right: 3%;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        color: #ffffff;
+        font-size: 13px;
+        line-height: 1;
+        font-weight: 500;
+    }
+
+    .tag {
+        position: absolute;
+        bottom: 0;
+        text-align: center;
+        text-transform: uppercase;
+        font-size: 12px;
+        font-weight: 500;
+        padding: 0 15px;
+        color: #ffffff;
+    }
+
+    .blog-content {
+        padding: 25px 15px;
+    }
+
+    .blog-title {
+        font-size: 18px;
+        font-weight: 500;
+    }
+
+    .blog-subtitle {
+        font-weight: 400;
+        color: #ff003b;
+        margin-bottom: 16px;
+    }
+
+    .blog-desc {
+        font-size: 14px;
+    }
+
+    .blog-desc a {
+        text-decoration: none;
+        color: #ff003b;
+        font-weight: 500;
+    }
+
+    .blog-footer {
+        display: flex;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .blog-author {
+        font-size: 14px;
+        font-weight: 500;
+    }
+
+    .blog-post {
+        font-size: 12px;
+        color: #b3b2b2;
+    }
+
+    .blog-avatar {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        display: block;
+        overflow: hidden;
+        background-color: black;
+        padding: 6px 12px;
+        color: white;
+    }
+
+    .blog-avatar img {
+        width: 100%;
+    }
+
+    .blog-comment {
+        margin-left: 10px;
+    }
+
+    .blog-footer .btn {
+        margin-left: auto;
+    }
+</style>
+
+{% if request.user.is_authenticated %}
+<div class="button-div mt-0">
+    <button type="button" onclick="show_add_post_modal()" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+        data-bs-whatever="@mdo">Add Post here</button>
+    <div class="row mt-2 pt-2" id="post-list">
+    </div>
+</div>
+
+{% else %}
+
+<div class="button-div mt-0 ">
+
+    <div class="row mt-2 pt-2" id="post-list">
+    </div>
+
+</div>
+{% endif %}
+
+
+<!-- modal -->
+
+<div  class="hide js-add-post" style="background-color: #000000bb; width: 100%; height: 100%; position: fixed; top: 0; left: 0; z-index: 4; scroll-behavior:smooth;">
+    <div style="background-color: white; width: 100%; padding: 10px; margin: auto; margin-top: 10px;">
+        <form method="POST" id="post-form" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Title:</label>
+                <input type="text" name="title" class="form-control" id="recipient-name" required>
+            </div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Content:</label>
+                <textarea class="form-control" name="content" id="editor" required></textarea>
+            </div>
+
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label" >Content:</label>
+                <input type="file" name="image" required>
+            </div>
+            <div>
+                <button type="button" onclick="hide_add_post_modal()" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Send message</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="{% static '/ckeditor/ckeditor.js' %}"></script>
+
+<script>
+
+    
+    function hideModel() {
+        document.getElementById("example-modal").classList = "hide"
+    }
+
+    // CKEDITOR.replace("content")
+
+    CKEDITOR.replace('editor');
+
+
+    const postList = document.getElementById('post-list')
+    const postFormDiv = document.getElementById('post-form')
+    const modelPost = document.getElementById('exampleModal')
+
+    // var loc = window.location
+    // console.log(loc)
+    // var wsStart = "ws://" 
+    
+    // if(loc.protocol == "https:"){
+    //     wsStart = "wss://"
+    // }
+
+    // var endpoint = wsStart+loc.host+"/api/post/create/"
+    // var socket = new WebSocket(endpoint)
+    // socket.onmessage  = function(e){
+    //     console.log("message", e)
+    //     charPostData = e.data
+    //     console.log(charPostData)
+    // }
+    // socket.onopen = function(e){
+    //     postFormDiv.addEventListener("submit", function (event) {
+    //         event.preventDefault()
+    //         const myform = event.target
+    //         console.log(myform)
+    //         const formdata = new FormData(myform)
+    //         formdata.append('content', CKEDITOR.instances['editor'].getData())    
+    //         for (const item of formdata.entries()) {
+    //             data = item
+    //             finalData ={
+    //                 "message":data
+    //             }
+
+    //             socket.send(JSON.stringify(finalData))
+    //         }
+         
+            
+    //     })
+    
+    // }
+
+    // socket.onerror = function(e){
+    //     console.log("message", e)
+    // }
+
+    // socket.onclose = function(e){
+    //     console.log("message", e)
+    // }
+
+
+
+
+    function show_add_post_modal() {
+        let mydiv = document.querySelector(".js-add-post")
+        mydiv.classList.remove("hide")
+    }
+
+
+    function hide_add_post_modal() {
+        let mydiv = document.querySelector(".js-add-post")
+        mydiv.classList.add("hide")
+    }
+
+    function stripHTML(my_string){
+        var charArr   = my_string.split(''),
+            resultArr = [],
+            htmlZone  = 0,
+            quoteZone = 0;
+        for( x=0; x < charArr.length; x++ ){
+         switch( charArr[x] + htmlZone + quoteZone ){
+           case "<00" : htmlZone  = 1;break;
+           case ">10" : htmlZone  = 0;resultArr.push(' ');break;
+           case '"10' : quoteZone = 1;break;
+           case "'10" : quoteZone = 2;break;
+           case '"11' : 
+           case "'12" : quoteZone = 0;break;
+           default    : if(!htmlZone){ resultArr.push(charArr[x]); }
+         }
+        }
+        return resultArr.join('');
+    }
+
+
+    function postListDiv(post) {
+        return `
+        <div class="col-12 col-md-6 col-xl-4 mb-3" >
+        <a href="${post.slug}" style="text-decoration:none">
+            <div class="card-group">
+                <div class="card">
+                    <img src="http://localhost:8000/${post.image}" style="border: 1px solid lightgray; width:100%; height: 200px; object-fit: cover; object-position: 20% 20%; border-radius:4px;">
+                    <div class="card-body">
+                    <h5 class="card-title">${post.title}</h5>
+                    <p style="color:black;">${stripHTML(post.content.slice(0, 100))} ...</p>
+                    </div>
+                    <div class="card-footer">
+                    <small class="text-muted">Last updated 3 mins ago</small>
+                    </div>
+                </div>
+            </div>
+   
+        </a>
+        </div>
+    
+        `
+    }
+
+    function loadPost() {
+        const xhr = new XMLHttpRequest()
+        const method = "GET"
+        const endpoint = "/api/posts/"
+        xhr.responseType = "json"
+        xhr.open(method, endpoint)
+        xhr.onload = function () {
+            post_list = xhr.response
+            let finalPost = ""
+            for (let i = 0; i < post_list.length; i++) {
+                const currentPost = postListDiv(post_list[i])
+                finalPost += currentPost
+            }
+            postList.innerHTML = finalPost
+        }
+        xhr.send()
+    }
+
+    loadPost()
+
+    postFormDiv.addEventListener("submit", function (e) {
+        e.preventDefault()
+        const myform = e.target;
+        const formdata = new FormData(myform)
+        formdata.append('content', CKEDITOR.instances['editor'].getData());
+        const xhr = new XMLHttpRequest()
+        const method = "POST"
+        const url = "/api/post/create/"
+        xhr.responseType = "json"
+        xhr.open(method, url)
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                loadPost()  
+               
+            } else if (xhr.status === 403) {
+                window.location.href = "/accounts/login"
+            }  
+            loadPost()
+            hide_add_post_modal()
+
+        }
+        xhr.send(formdata)
+    })
+
+</script>
+{% endblock content %}

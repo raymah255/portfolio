@@ -1,0 +1,150 @@
+{% extends 'pages/blog/base.html' %}
+{% load static %}
+{% block content %}
+
+<section>
+    <div class="container py-5 my-5" id="profile">
+      
+    </div>
+  </section>
+
+  <!-- <script src="//cdnjs.cloudflare.com/ajax/libs/numeral.js/2.0.6/numeral.min.js"></script> -->
+  <script src="{% static 'js/numeral.js' %}"></script>
+  <script>
+    
+    const profileDivEl = document.getElementById("profile")
+
+    function profileDiv(profile){
+      return `
+      <div class="row" >
+        <div class="col-lg-4">
+          <div class="card mb-4">
+            <div class="card-body text-center">
+              <img src="/${profile.image}" alt="avatar" class="rounded-circle img-fluid" style="width: 150px; height: 150px; object-fit: cover;">
+              <h5 class="my-3 " style="font-weight: bold !important;">${profile.username}</h5>
+              <p class="text-muted mb-1">Full Stack Developer</p>
+              <p class="text-muted mb-4"><b>{{profile.location}}</b></p>
+              <div class="d-flex justify-content-center mb-2" style="margin-left: 10px">
+                <p style="font-weight:bold;">${numeral(profile.post_count).format('0,0a')}  <span >Post<span></p>
+                <p><span style="font-weight: bold; margin-left: 10px">${numeral(profile.followers_count).format('0,0a')}<span>  Followers</p>
+                <p style="margin-left: 10px"><span style="font-weight: bold">${numeral(profile.following_count).format('0,0a')}<span> Following</p>
+              </div>
+              <div class="d-flex justify-content-center mb-2">
+                ${profile.is_following ? `<button type="button" onclick="followingButton('unfollow')" class="btn btn-danger">UnFollow</button>`:`<button type="button" onclick="followingButton('follow')" class="btn btn-primary">Follow</button>`}
+                <button type="button" class="btn btn-secondary ms-1"><a style="text-decoration:none; color:white;" href="/profile/edit/${profile.username}">Edit Profile</a></button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card mb-4">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Full Name</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">${profile.first_name} ${profile.last_name}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Email</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">${profile.email}</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Mobile</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">(098) 765-4321</p>
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <p class="mb-0">Address</p>
+                </div>
+                <div class="col-sm-9">
+                  <p class="text-muted mb-0">${profile.location}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      `
+    }
+
+    function loadProfile() {
+            const xhr = new XMLHttpRequest();
+            const method = "GET";
+            const url = "/api/profile/{{profile.user.username}}/";
+            xhr.responseType = "json";
+            xhr.open(method, url);
+
+            xhr.onload = function () {
+                post_list = xhr.response;
+    
+
+                let finalPost = "";
+                const currentPost = profileDiv(post_list);
+                finalPost += currentPost;
+                profileDivEl.innerHTML = finalPost;
+        
+            };
+            xhr.send();
+        }
+      
+      loadProfile()
+
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+
+    function followingButton(action){
+
+      data = JSON.stringify({
+            action: action
+        })
+
+        const xhr = new XMLHttpRequest()
+        const url = "/api/profile/{{profile.user.username}}/"
+        const method = "post"
+        const csrftoken = getCookie('csrftoken');
+        xhr.responseType = "json"
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function () {
+    
+         loadProfile()
+        }
+        xhr.onabort = function () {
+  
+        }
+        xhr.send(data)
+    }
+  </script>
+
+{% endblock content %}

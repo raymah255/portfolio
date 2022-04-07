@@ -1,0 +1,33 @@
+{% extends '../pages/blog/base.html' %}
+
+{% block content %}
+ 
+{% load crispy_forms_tags %}
+
+<div class="col-12 col-md-6 col-lg-4 col-xl-4 col-xxl-4 mx-auto mt-5 pt-5" style="max-width: 600px;">
+     <h2>{{log_label}}</h2>
+     
+     {% if message %}
+     
+     <div class="alert alert-warning" role="alert">
+        {{message}} 
+      </div>
+         
+         
+     {% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+{{form|crispy}}
+<button class="btn btn-primary w-100 d-block mb-5 mt-3">{{sub_label}}</button>
+
+
+</form>
+{% if reg_lik %}
+  <a href={{reg_lik}} style="text-decoration: none; font-weight: bold;">register here ...</a>
+{% endif %}
+
+</div>
+
+{% endblock content %}
+
