@@ -24,3 +24,8 @@ Long terms to do
 -> Notification
 -> DM
 -> Explore finding hashs
+
+
+deployment 
+1. git clone https://github.com/myusername/myproject.git
+2. mkvirtualenv --python=python3.6 myproject
