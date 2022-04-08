@@ -13,7 +13,6 @@
       </button>
 
       <div class="collapse navbar-collapse order-3" id="navbarCollapse">
-        <!-- Left navbar links -->
         <ul class="navbar-nav">
 
           {% if request.user.is_authenticated %}
@@ -57,16 +56,27 @@
          
 
         <!-- SEARCH FORM -->
-        <form class="form-inline ml-0 ml-md-3">
-          <div class="input-group input-group-sm">
-            <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+        <div>
+           <form class="form-inline ml-0 ml-md-3" method="POST" id="search_form">
+          {% csrf_token %}
+          <div class="input-group input-group-sm search-container">
+            <input class="form-control form-control-navbar" name="search" type="search" placeholder="Search" aria-label="Search" autocomplete="off">
             <div class="input-group-append">
               <button class="btn btn-navbar" type="submit">
                 <i class="fas fa-search"></i>
               </button>
             </div>
+
+            <div class="search-input" id="search-input">
+  
+            </div>
+            
           </div>
+          
         </form>
+       
+        </div>
+       
       </div>
 
       <!-- Right navbar links -->
@@ -100,5 +110,8 @@
   </nav>
 
 </div>
+
+
+
 
 

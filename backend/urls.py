@@ -12,6 +12,7 @@ urlpatterns = [
     path("profile/", include("profiles.urls")),
     path("chat/", include("chat.urls")),
     path("api/chat/", include("chat.api.urls")),
+    path("api/accounts/", include("accounts.api.urls")),
 ]
 
 urlpatterns+=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

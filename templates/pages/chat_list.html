@@ -112,8 +112,8 @@
     }
 
     .user_img {
-        height: 70px;
-        width: 70px;
+        height: 30px;
+        width: 30px;
         border: 1.5px solid #f5f6fa;
 
     }
@@ -151,16 +151,16 @@
         background-color: #c23616 !important;
     }
 
-    .user_info {
+    /* .user_info {
         margin-top: auto;
         margin-bottom: auto;
         margin-left: 15px;
-    }
-
+    } */
+/* 
     .user_info span {
         font-size: 20px;
         color: white;
-    }
+    } */
 
     .user_info p {
         font-size: 10px;
@@ -275,10 +275,11 @@
             <div class="card mb-sm-3 mb-md-0 contacts_card">
                 <div class="card-header">
                     <div class="input-group">
-                        <input type="text" placeholder="Search..." name="" class="form-control search">
+                        <h5 style="color: white; font-weight: bold; border-bottom: 1px solid whitesmoke;">{{request.user}}</h5>
+                        <!-- <input type="text" placeholder="Search..." name="" class="form-control search">
                         <div class="input-group-prepend">
                             <span class="input-group-text search_btn"><i class="fas fa-search"></i></span>
-                        </div>
+                        </div> -->
                     </div>
                 </div>
                 <div class="card-body contacts_body">
@@ -287,13 +288,13 @@
                       <a style="text-decoration: none; color: white;" href="/chat/{{user}}">
                           <li class="">
                               <div class="d-flex bd-highlight">
-                                  <div class="img_cont">
-                                      <img src="https://static.turbosquid.com/Preview/001292/481/WV/_D.jpg"
+                                  <div class="">
+                                      <img src="/{{user.profile_img}}"
                                           class="rounded-circle user_img">
-                                      <span class="online_icon"></span>
+                                      <!-- <span class="online_icon"></span> -->
                                   </div>
-                                  <div class="user_info">
-                                      <span>{{user}}</span>
+                                  <div >
+                                      <span style="margin-left: 5px;">{{user}}</span>
                                       <!-- <p>Kalid is online</p> -->
                                   </div>
                               </div>
@@ -313,20 +314,20 @@
                 <div class="d-flex bd-highlight">
       
                     <div class="user_info">
-                        <span>Your Messages</span>
+                        <span style="color: white; font-weight: bold;">Your Messages</span>
                     </div>
                     <div class="video_cam">
                         <span><i class="fas fa-envelope"></i></span>
                         <!-- <span><i class="fas fa-phone"></i></span> -->
                     </div>
                 </div>
-                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
+                <!-- <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span> -->
                 <div class="action_menu">
                     <ul>
-                        <li><i class="fas fa-user-circle"></i> View profile</li>
-                        <li><i class="fas fa-users"></i> Add to close friends</li>
+                        <!-- <li><i class="fas fa-user-circle"></i> View profile</li> -->
+                        <!-- <li><i class="fas fa-users"></i> Add to close friends</li>
                         <li><i class="fas fa-plus"></i> Add to group</li>
-                        <li><i class="fas fa-ban"></i> Block</li>
+                        <li><i class="fas fa-ban"></i> Block</li> -->
                     </ul>
                 </div>
             </div>
@@ -339,6 +340,17 @@
         </div>
     </div>
 </div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<script>
+    $(document).ready(function(){
+    $('#action_menu_btn').click(function(){
+        $('.action_menu').toggle();
+    });
+        });
+</script>
+
+
   
 {% endblock content %}   
 

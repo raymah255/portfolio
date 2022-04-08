@@ -13,7 +13,43 @@
     <title>Blog</title>
 
     <style>
-      
+      .search-container{
+          position: relative;
+      }
+
+      .search-input{
+          position: absolute;
+          top: 100%;
+          left:0;
+          padding-top: 5px;
+          padding-left: 10px;
+          border: 1px solid rgb(182, 175, 175);
+          width: 100%;
+          background-color: white;
+          border-radius: 4px;
+          transition:  2s ease-in;
+          display:  none;
+          height: 210px;
+          overflow-x: hidden;
+          overflow-y: auto;
+      }
+
+      .show_search-input{
+          position: absolute;
+          top: 100%;
+          left:0;
+          padding-left: 10px;
+          width: 100%;
+          background-color: rgb(242, 235, 235);
+          border-radius: 4px;
+          transition:  2s ease-in;
+          display:  block;
+          box-shadow: 5px 5px 5px #aaaaaa;
+          border: none;
+          height: 210px;
+          overflow-x: hidden;
+          overflow-y: auto;
+      }
     </style>
   </head>
   <body class="layout-top-nav layout-navbar-fixed" style="height: auto;">
@@ -27,7 +63,81 @@
     
  
 
+ <script>
+   const searchInput = document.getElementById("search-input")
 
+
+   function show_search(){
+       searchInput.classList.add("show_search-input")
+   }
+
+   function hide_search(){
+       searchInput.classList.remove("show_search-input")
+   }
+   function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    function showSearchElDiv(profile){
+        return`<div style="margin-top: 15px">
+                    <img src="/${profile.image}"  style="width:40px; height: 40px; border-radius: 50%; object-fit: cover;"/>
+                    <a style="margin-left: 10px;" href="/profile/${profile.username}">${profile.username}<a>
+                </div>`
+    }
+
+   const searchForm = document.getElementById("search_form")
+   searchForm.addEventListener("keyup", function(e){
+        
+        if(e.target.value.length > 0){
+          show_search()  
+        }else{
+            hide_search()
+        }
+        data = JSON.stringify({
+            search: e.target.value
+        })
+        
+        const xhr = new XMLHttpRequest()
+        const url = "/api/profile/search/"
+        const method = "POST"
+        const csrftoken = getCookie('csrftoken');
+        xhr.responseType = "json"
+        xhr.open(method, url)
+        xhr.setRequestHeader("Content-Type", "application/json")
+        xhr.setRequestHeader("HTTP_X_REQUESTED_WITH", "XMLHttpRequest")
+        xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest")
+        xhr.setRequestHeader("X-CSRFToken", csrftoken)
+        xhr.onload = function () {
+
+            let finalSearch = ""
+            search_list = xhr.response
+            for (let i = 0; i < search_list.length; i++) {
+                searchObj = search_list[i]
+                const currentSearch = showSearchElDiv(searchObj)
+                finalSearch+=currentSearch
+            }
+            searchInput.innerHTML = finalSearch
+    
+        }
+
+        xhr.send(data)
+    })
+
+
+
+ </script>
     <script src="{% static 'plugins/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
     <script src="{% static 'dist/js/adminlte.min.js' %}"></script>

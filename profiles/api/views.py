@@ -29,13 +29,17 @@ def profile_views(request, username, *args, **kwargs):
     return Response(seralizer.data)
 
 
-# @api_view(['POST', 'GET'])
-# @permission_classes([IsAuthenticated])
-# def user_follow_view(request, username, *args, **kwargs):
-#     me = request.user
-#     other_user =  User.objects.filter(username=username)
-#     if not other_user.exists():
-#         return Response({}, status=404)
-#     other_user = other_user.first().profile
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def user_profile_views(request, *args, **kwargs):
+    qs =  Profile.objects.all()
+    serializer = PublicProfileSerializer(qs, many=True)
+    return Response(serializer.data, status=200)
 
-#     return Response(seralizer.data, status=200)
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def user_profile_search_views(request, *args, **kwargs):
+    user_search = request.data.get("search")
+    qs =  Profile.objects.filter(user__username__icontains=user_search)
+    serializer = PublicProfileSerializer(qs, many=True)
+    return Response(serializer.data, status=201)
