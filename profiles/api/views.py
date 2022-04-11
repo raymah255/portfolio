@@ -30,14 +30,14 @@ def profile_views(request, username, *args, **kwargs):
 
 
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def user_profile_views(request, *args, **kwargs):
     qs =  Profile.objects.all()
-    serializer = PublicProfileSerializer(qs, many=True)
+    serializer = PublicProfileSerializer(qs, many=True, context={"request":request})
     return Response(serializer.data, status=200)
 
 @api_view(['POST'])
-@permission_classes([IsAuthenticated])
+# @permission_classes([IsAuthenticated])
 def user_profile_search_views(request, *args, **kwargs):
     user_search = request.data.get("search")
     qs =  Profile.objects.filter(user__username__icontains=user_search)

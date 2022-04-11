@@ -154,7 +154,7 @@ img {
 }
 
 nav {
-  max-width: 968px;
+  /* max-width: 968px; */
   height: var(--haader-height);
   display: flex;
   justify-content: space-between;

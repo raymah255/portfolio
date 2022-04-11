@@ -11,11 +11,12 @@ class PublicProfileSerializer(serializers.ModelSerializer):
     is_following = serializers.SerializerMethodField(read_only=True)
     followers_count = serializers.SerializerMethodField(read_only=True)
     following_count = serializers.SerializerMethodField(read_only=True)
+    is_request_user = serializers.SerializerMethodField(read_only=True)
 
 
     class Meta:
         model = Profile
-        fields = ["image", "first_name", "last_name", "username", "email", "location", "is_profile_pic", "is_following", "followers_count", "following_count", "post_count"]
+        fields = ["image", "first_name", "is_request_user", "last_name", "username", "email", "location", "is_profile_pic", "is_following", "followers_count", "following_count", "post_count"]
 
     def get_first_name(self, obj):
         return obj.user.first_name
@@ -32,6 +33,15 @@ class PublicProfileSerializer(serializers.ModelSerializer):
     
     def get_image(self, obj):
         return obj.profile_img.url
+
+    def get_is_request_user(self, obj):
+        context = self.context
+        request = context.get("request")
+        if request:
+            user = request.user
+            if str(user) == str(obj.user.username):
+                return True
+            return False
     
     def get_is_following(self, obj):
         is_following = False

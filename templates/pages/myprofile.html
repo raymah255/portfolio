@@ -30,8 +30,8 @@
                 <p style="margin-left: 10px"><span style="font-weight: bold">${numeral(profile.following_count).format('0,0a')}<span> Following</p>
               </div>
               <div class="d-flex justify-content-center mb-2">
-                ${profile.is_following ? `<button type="button" onclick="followingButton('unfollow')" class="btn btn-danger">UnFollow</button>`:`<button type="button" onclick="followingButton('follow')" class="btn btn-primary">Follow</button>`}
-                <button type="button" class="btn btn-secondary ms-1"><a style="text-decoration:none; color:white;" href="/profile/edit/${profile.username}">Edit Profile</a></button>
+                ${profile.is_request_user ? `<button class="btn btn-success">Settings</button>`:`${profile.is_following ? `<button type="button" onclick="followingButton('unfollow')" class="btn btn-danger">UnFollow</button>`:`<button type="button" onclick="followingButton('follow')" class="btn btn-primary">Follow</button>`}`}
+                ${profile.is_request_user ? `<button type="button" class="btn btn-secondary ms-1"><a style="text-decoration:none; color:white;" href="/profile/edit/${profile.username}">Edit Profile</a></button>`:`<button type="button" class="btn btn-secondary ms-1"><a style="text-decoration:none; color:white;" href="/chat/${profile.username}">Message</a></button>`}
               </div>
             </div>
           </div>
