@@ -306,6 +306,26 @@
     const profileSide = document.getElementById("profile-side");
     
     
+    function loadNotifications() {
+        const xhr = new XMLHttpRequest()
+        const method = "GET"
+        const endpoint = "/api/notification/"
+        xhr.responseType = "json"
+        xhr.open(method, endpoint)
+        xhr.onload = function () {
+           
+            // post_list = xhr.response 
+            // let finalPost=""
+            // const currentPost = notificationListDiv(post_list)
+            // finalPost+=currentPost
+            // userNotification.innerHTML = finalPost
+
+          
+        }
+        xhr.send()
+    }
+
+   
 
 
     function profileListDiv(profile) {
@@ -410,9 +430,7 @@
             } else if (xhr.status === 403) {
                 window.location.href = "/accounts/login"
             }
-
-            
-
+            loadNotifications()
         }
         xhr.onabort = function () {
             console.log("Method")
@@ -420,6 +438,8 @@
         }
         xhr.send(data)
     }
+
+ 
 
     function commentListDiv(comment) {
 

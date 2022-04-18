@@ -1,8 +1,8 @@
+from pyexpat import model
+from attr import fields
 from rest_framework import serializers
-from portifolio.models import Comment, Post, User
+from portifolio.models import Comment, Post, Notifacation
 from profiles.api.serializers import PublicProfileSerializer
-
-
 
 
 class ChildCommentSerializers(serializers.ModelSerializer):
@@ -46,9 +46,6 @@ class PostCreateSerializer(serializers.ModelSerializer):
         fields=["id", "title","user", "content", "image", ]
     
     
-
-
-
 class PostSerializer(serializers.ModelSerializer):
     comments = serializers.SerializerMethodField()
     user = PublicProfileSerializer(source="user.profile", read_only=True)
@@ -56,10 +53,11 @@ class PostSerializer(serializers.ModelSerializer):
     likes = serializers.SerializerMethodField(read_only=True)
     is_like = serializers.SerializerMethodField(read_only=True)
     image = serializers.SerializerMethodField(read_only=True)
+    request_user = serializers.SerializerMethodField(read_only=True)
    
     class Meta:
         model = Post
-        fields=["id", "title", "likes", "is_like", "user", "content", "image", "count", "comments", "slug"]
+        fields=["id", "request_user", "title", "likes", "is_like", "user", "content", "image", "count", "comments", "slug"]
     
     def get_comments(self, obj):
         return CommentSerializers(Comment.objects.filter(parent=None, post=obj.id), many=True).data
@@ -73,6 +71,11 @@ class PostSerializer(serializers.ModelSerializer):
 
     def get_image(self, obj):
         return obj.image.url
+    
+    def get_request_user(self, obj):
+        context = self.context
+        request = context.get("request")
+        return request.user.username
         
     def get_is_like(self, obj):
         is_like = False
@@ -86,7 +89,18 @@ class PostSerializer(serializers.ModelSerializer):
 
 class LikePostSerializer(serializers.Serializer):
     id = serializers.IntegerField()
-    
-    
 
 
+class NotificationSerializers(serializers.ModelSerializer):
+    to_user = PublicProfileSerializer(source="to_user.profile", read_only=True)
+    from_user = PublicProfileSerializer(source="from_user.profile", read_only=True)
+    class Meta:
+        model=Notifacation
+        fields=["id", "notification_type", "to_user", "from_user", "post", "comment", "user_has_seen"]
+
+class CreateNotificationSerializers(serializers.ModelSerializer):
+    to_user = PublicProfileSerializer(source="to_user.profile", read_only=True)
+    from_user = PublicProfileSerializer(source="from_user.profile", read_only=True)
+    class Meta:
+        model=Notifacation
+        fields=["id", "notification_type", "to_user", "from_user", "post", "comment", "user_has_seen"]

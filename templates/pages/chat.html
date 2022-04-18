@@ -287,7 +287,7 @@
                             <li class="">
                                 <div class="d-flex bd-highlight">
                                     <div class="img_con">
-                                        <img src="/{{other_user.profile.profile_img}}"
+                                        <img src="/{{user.profile_img}}"
                                 class="rounded-circle user_img" width="30px">
                                         <!-- <span class="online_icon"></span> -->
                                     </div>
@@ -370,10 +370,10 @@
     const messageList = document.getElementById("message-list")
 
     function MessageElementDiv(message) {
-        return ` <div style="margin-bottom: 30px" class="d-flex mb-4 ${message.sender === message.user ? `justify-content-start"` : `justify-content-end"`} ">
-                            <div class="${message.sender === message.user ? `msg_cotainer_send"` : `msg_cotainer"`}">
+        return ` <div style="margin-bottom: 30px" class="d-flex mb-4 ${message.sender.username === message.user ? `justify-content-start"` : `justify-content-end"`} ">
+                            <div class="${message.sender.username === message.user ? `msg_cotainer_send"` : `msg_cotainer"`}">
                                 ${message.message}
-                                <span style="margin-top:20px" class="${message.sender === message.user ? `msg_time_send"` : `msg_time"`}">8:40 AM</span>
+                                <span style="margin-top:20px" class="${message.sender.username === message.user ? `msg_time_send"` : `msg_time"`}">8:40 AM</span>
                             </div>
                         </div>
                     `

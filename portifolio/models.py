@@ -1,13 +1,16 @@
 from django.db import models
-from django.forms import SlugField
 from django.utils import timezone
 from django.contrib.auth import get_user_model
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.utils.text import slugify
 from ckeditor.fields import RichTextField
 
 # Create your models here.
 User = get_user_model()
+
+
+
+
 
 
 class Post(models.Model):
@@ -41,6 +44,8 @@ class Post(models.Model):
         post_number = self.user.post_set.all().count()
         return post_number
 
+    
+
 
 class Comment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -65,7 +70,8 @@ class Comment(models.Model):
         if self.parent is not None:
             return False
         return True
-
+    
+  
 def pre_save_slug(instance, *args, **kwargs):
     slug = slugify(instance.title)
     exists = Post.objects.filter(slug=slug).exists()
@@ -75,5 +81,26 @@ def pre_save_slug(instance, *args, **kwargs):
 
 
 pre_save.connect(pre_save_slug, sender=Post)
+
+class Notifacation(models.Model):
+    notification_type = models.IntegerField()
+    to_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification_to', null=True)
+    from_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notification_from', null=True)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="notification_post", blank=True, null=True)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, related_name="notification_comment", blank=True, null=True)
+    user_has_seen   = models.BooleanField(default=False)
+
+    class Meta:
+        ordering=("-id", )
+
+
+# def notifaction_save(sender, instance, created, *args, **kwargs):
+#     if created:
+#         Notifacation.objects.create(notification_type=1, to_user=instance.user, from_user=instance.user, post=instance)
+# post_save.connect(notifaction_save, sender=Post)
+
+
+
+
     
     

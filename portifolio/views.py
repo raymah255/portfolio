@@ -1,6 +1,6 @@
 from django.http import Http404, JsonResponse
-from django.shortcuts import render
-from .models import Post, Comment
+from django.shortcuts import redirect, render
+from .models import Notifacation, Post, Comment
 from .forms import CommentForm, PostForm
 
 # Create your views here.
@@ -78,4 +78,11 @@ def create_comment_views(request, *args, **kwargs):
             "response": form.data
         }
         return JsonResponse(data)
-    
+
+
+def user_like_notification(request, notification_id, post_id, *args, **kwargs):
+    notification = Notifacation.objects.get(pk=notification_id)
+    post = Post.objects.get(pk=post_id)
+    notification.user_has_seen = True
+    notification.save()
+    return redirect("/blog/"+post.slug)

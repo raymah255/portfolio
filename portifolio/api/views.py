@@ -1,7 +1,7 @@
 from django.http import Http404
 from django.shortcuts import redirect, render
-from .serializers import CommentCreateSerializers, PostCreateSerializer, CommentSerializers, PostSerializer, LikePostSerializer
-from portifolio.models import Comment, Post
+from .serializers import CommentCreateSerializers, NotificationSerializers, PostCreateSerializer, CommentSerializers, PostSerializer, LikePostSerializer
+from portifolio.models import Comment, Post, Notifacation
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -10,7 +10,7 @@ from rest_framework.permissions import IsAuthenticated
 @api_view(["GET"])
 def post_list_views(request, *args, **kwargs):
     qs = Post.objects.all()
-    serializers = PostSerializer(qs, many=True)
+    serializers = PostSerializer(qs, many=True, context={"request": request})
     return Response(serializers.data)
 
 @api_view(["GET"])
@@ -25,13 +25,13 @@ def feed_list_views(request, *args, **kwargs):
         other_user_following_id = [x.id for x in profile]
     other_user_following_id.append(me.id)
     qs = Post.objects.filter(user__id__in=other_user_following_id)
-    serializers = PostSerializer(qs, many=True)
+    serializers = PostSerializer(qs, many=True, context={"request": request})
     return Response(serializers.data)
 
 @api_view(["GET"])
 def comment_list_views(request,  *args, **kwargs):
     qs = Comment.objects.all()
-    serializers = CommentSerializers(qs, many=True)
+    serializers = CommentSerializers(qs, many=True, context={"request": request})
     return Response(serializers.data)
 
 @api_view(["GET"])
@@ -58,8 +58,12 @@ def post_create_view(request, *args, **kwargs):
 @permission_classes([IsAuthenticated])
 def create_comment_views(request, *args, **kwargs):
     serializer = CommentCreateSerializers(data=request.data)
+    
     if serializer.is_valid(raise_exception=True):
-        serializer.save(user=request.user)
+        instance = serializer.save(user=request.user)
+        # print(instance)
+        Notifacation.objects.create(notification_type=2, to_user=request.user, from_user=serializer.validated_data.get("post").user, comment=instance)
+        print(serializer.initial_data)
         return Response(serializer.data)
     return Response({}, status=404)
 
@@ -77,10 +81,28 @@ def post_like_views(request, *args, **kwargs):
     qs = qs.first()
     if request.user in qs.like.all():
         qs.like.remove(request.user)
+        Notifacation.objects.create(notification_type=4, to_user=request.user, from_user=qs.user, post=qs)
     elif request.user not in qs.like.all():
         qs.like.add(request.user)
-    serializers = PostSerializer(qs)
+        Notifacation.objects.create(notification_type=1, to_user=request.user, from_user=qs.user, post=qs)
+    serializers = PostSerializer(qs, context={"request": request})
     return Response(serializers.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def notifacation_views(request, *args, **kwargs):
+    qs = Notifacation.objects.filter(from_user=request.user).exclude(user_has_seen=True)
+    serializer = NotificationSerializers(qs, many=True, context={"request": request})
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def create_post_notifacation_views(request, *args, **kwargs):
+    qs = Notifacation.objects.all()
+    serializer = NotificationSerializers(qs, many=True)
+    return Response(serializer.data)
 
 
 

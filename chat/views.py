@@ -1,5 +1,5 @@
 from django.dispatch import receiver
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.contrib.auth.decorators import login_required
 from django.http.response import JsonResponse
 from .models import Message, User
@@ -24,8 +24,9 @@ def chat_room(request, username, *args, **kwargs):
     return render(request, "pages/chat.html", context)
 
 def list_chat_room(request, *args, **kwargs):
+    if not request.user.is_authenticated:
+        return redirect("/accounts/login")
     other_user_following = request.user.following.all()
-    print(other_user_following)
     context = {
         "others":other_user_following
     }

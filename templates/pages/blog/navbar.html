@@ -83,12 +83,22 @@
       <ul class="order-1 order-md-3 navbar-nav navbar-no-expand ml-auto">
      
         <!-- Notifications Dropdown Menu -->
+        {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link" data-widget="dropdown" data-toggle=""  data-slide="true" href="/chat/">
            <i class="fas fa-envelope mr-2"></i> 
            <!-- <span class="badge badge-danger navbar-badge">15</span> -->
           </a>
         </li>
+
+        
+          <li class="nav-item dropdown" id="user-notification">
+            <div  class="dropdown-menu dropdown-menu-lg dropdown-menu-right" id="not-dropdown" style="left: inherit; right: 0px; height: 100px !important; overflow: auto !important; ">
+
+            </div>
+          </li>
+        {% endif %}
+      
 
         {% if request.user.is_authenticated %}
         <li class="nav-item">
